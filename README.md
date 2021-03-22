@@ -70,7 +70,18 @@ public class ExampleBoardTutorial extends BoardPlus {
     @Override public void onOnlineChange (final FastBoard board) { }
     /* optionnaly, basic events */
 }
-```
+```  
+And now, register it:
+```java
+ExampleBoardTutorial inst = new ExampleBoardTutorial();
+// Instantiate the newly created class.
+
+// a simple scoreboard
+inst.register( " Name " );
+
+// the default scoreboard, with her name:
+inst.registerAsDefault( "Name" );
+```   
 ## Use BoardPlus:  
 ### Get existing instance:
 ```java
