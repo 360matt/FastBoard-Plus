@@ -9,11 +9,29 @@ import java.util.function.Consumer;
 
 public class ScoreBoardAPI {
 
-    protected static ScoreboardAbstract defaultInstance;
+    protected static BoardPlus defaultInstance;
 
-    static Plugin registeredPlugin;
+    static Plugin registeredPlugin, disabled;
     public static void registerPlugin (final Plugin plugin) {
         registeredPlugin = plugin;
+    }
+
+    public static void unregisterPlugin () {
+        if (registeredPlugin != null) {
+            BoardPlus.timer.shutdownNow();
+            BoardPlus.deleteAll();
+            registeredPlugin = null;
+        }
+    }
+
+    public static void disable () {
+        disabled = registeredPlugin;
+        registeredPlugin = null;
+    }
+
+    public static void enable () {
+        registeredPlugin = disabled;
+        disabled = null;
     }
 
 
@@ -21,26 +39,9 @@ public class ScoreBoardAPI {
      *
      * @return l'instance qui a été register par défaut
      */
-    public static ScoreboardAbstract getDefaultInstance () { return defaultInstance; }
+    public static BoardPlus getDefaultInstance () { return defaultInstance; }
 
-    /**
-     *
-     * @param name le nom de l'instance qui nous interresse
-     * @return l'instance en question
-     */
-    public static ScoreboardAbstract getInstance (final String name) { return ScoreboardAbstract.allInstances.get(name); }
 
-    /**
-     * Permet d'update le scoreboard pour tous les joueurs
-     *
-     * @param instance le nom du scoreboard qui permettra de retrouver l'instance
-     * @param board le board des joueurs qui sera loop
-     */
-    public static void updateAllBoards (final String instance, final Consumer<FastBoard> board) {
-        for (final PlayerBoard playerBoard : getInstance(instance).playerBoards) {
-            board.accept(playerBoard.board);
-        }
-    }
 
 
 }
