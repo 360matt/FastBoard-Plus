@@ -1,14 +1,16 @@
-# FastBoard-Plus (1.7 - 1.16)
+# :sparkles: FastBoard-Plus (1.7 - 1.16)
 
 Forked from: FastBoard from MrMicky (https://github.com/MrMicky-FR/FastBoard)   
 Please read the original project documentation before this one.  
 
-## Why a fork ?
+## :question: Why a fork ?
 * I thought my additions might be useful for a few people, I personally use it on my server.  
 * it would be too cumbersome to add it to the original project  
 * This fork still has some utility  
+  
+My Discord: ``Matteow#6953``
 
-# What additional features  ?
+# :fire: What additional features  ?
 The goal of this library is to be able to quickly create a dynamic scoreboard.  
 * Each line can have its own refresh times defined by you.
 * So you avoid overly repetitive placeholder calls if it's not worth the uptime so many times in such a short time. 
