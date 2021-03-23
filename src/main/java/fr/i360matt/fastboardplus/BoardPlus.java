@@ -19,7 +19,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public abstract class BoardPlus implements Listener {
+public abstract class BoardPlus {
     protected static ScheduledExecutorService timer = Executors.newScheduledThreadPool(128);
     private final Map<Integer, Set<Consumer<FastBoard>>> consumers = new HashMap<>();
     protected static final Map<String, BoardPlus> boards = new HashMap<>();
@@ -51,7 +51,6 @@ public abstract class BoardPlus implements Listener {
     private String name;
 
     public BoardPlus () {
-        Bukkit.getPluginManager().registerEvents(this, ScoreBoardAPI.registeredPlugin);
         registerYourSchedulersHere();
     }
 
@@ -161,45 +160,5 @@ public abstract class BoardPlus implements Listener {
 
     /* end of API use */
 
-
-
-
-
-
-
-
-
-
-    /* start interscoarboard events private methods */
-
-    @EventHandler
-    private static void eventMove (final PlayerMoveEvent event) {
-        if (ScoreBoardAPI.registeredPlugin == null) return;
-        if (!event.getFrom().getBlock().getLocation().equals(event.getTo().getBlock().getLocation()))
-            for (final BoardPlus instanceCandidate : boards.values())
-                for (final BoardPlayer pBoardCandidate : instanceCandidate.playerBoards)
-                    instanceCandidate.onMove(pBoardCandidate.board);
-    }
-
-    @EventHandler
-    private static void eventJoin (final PlayerJoinEvent event) {
-        if (ScoreBoardAPI.registeredPlugin == null) return;
-        if (ScoreBoardAPI.defaultInstance != null)
-            BoardPlayer.getPlayer(event.getPlayer()).setCurrent(ScoreBoardAPI.defaultInstance);
-
-        for (final BoardPlus instanceCandidate : boards.values())
-            for (final BoardPlayer pBoardCandidate : instanceCandidate.playerBoards)
-                instanceCandidate.onOnlineChange(pBoardCandidate.board);
-    }
-
-    @EventHandler
-    private static void eventQuit (final PlayerQuitEvent event) {
-        BoardPlayer.deletePlayer(event.getPlayer());
-        if (ScoreBoardAPI.registeredPlugin == null) return;
-
-        for (final BoardPlus instanceCandidate : boards.values())
-            for (final BoardPlayer pBoardCandidate : instanceCandidate.playerBoards)
-                instanceCandidate.onOnlineChange(pBoardCandidate.board);
-    }
 
 }

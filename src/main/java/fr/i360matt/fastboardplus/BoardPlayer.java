@@ -56,11 +56,7 @@ public class BoardPlayer {
     }
 
     public void setCurrent (final BoardPlus scoreboard) {
-        if (this.current != null)
-            this.current.removePlayer(this);
-
         setBlank();
-
         (this.current = scoreboard).addPlayer(this);
     }
 
@@ -74,8 +70,7 @@ public class BoardPlayer {
     }
 
     public void remove () {
-        if (current != null)
-            current.removePlayer(this);
+        setBlank();
         if (board != null)
             board.delete();
         players.remove(player);

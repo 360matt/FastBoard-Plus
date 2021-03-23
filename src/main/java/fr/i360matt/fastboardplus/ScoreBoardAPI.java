@@ -2,17 +2,16 @@ package fr.i360matt.fastboardplus;
 
 
 
-import fr.i360matt.fastboardplus.utils.FastBoard;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-import java.util.function.Consumer;
 
 public class ScoreBoardAPI {
-
     protected static BoardPlus defaultInstance;
 
     static Plugin registeredPlugin, disabled;
     public static void registerPlugin (final Plugin plugin) {
+        Bukkit.getPluginManager().registerEvents(new BoardEvents(), plugin);
         registeredPlugin = plugin;
     }
 
@@ -25,13 +24,18 @@ public class ScoreBoardAPI {
     }
 
     public static void disable () {
-        disabled = registeredPlugin;
-        registeredPlugin = null;
+        if (registeredPlugin != null) {
+            disabled = registeredPlugin;
+            registeredPlugin = null;
+        }
     }
 
     public static void enable () {
-        registeredPlugin = disabled;
-        disabled = null;
+        if (disabled != null) {
+            registeredPlugin = disabled;
+            disabled = null;
+        }
+
     }
 
 
@@ -40,8 +44,4 @@ public class ScoreBoardAPI {
      * @return l'instance qui a été register par défaut
      */
     public static BoardPlus getDefaultInstance () { return defaultInstance; }
-
-
-
-
 }
