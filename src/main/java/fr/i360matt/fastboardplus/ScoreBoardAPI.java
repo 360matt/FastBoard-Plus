@@ -5,14 +5,17 @@ package fr.i360matt.fastboardplus;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
+import java.util.concurrent.Executors;
+
 
 public class ScoreBoardAPI {
     protected static BoardPlus defaultInstance;
 
-    static Plugin registeredPlugin, disabled;
+    protected static Plugin registeredPlugin, disabled;
     public static void registerPlugin (final Plugin plugin) {
         Bukkit.getPluginManager().registerEvents(new BoardEvents(), plugin);
         registeredPlugin = plugin;
+        startService();
     }
 
     public static void unregisterPlugin () {
@@ -20,6 +23,7 @@ public class ScoreBoardAPI {
             BoardPlus.timer.shutdownNow();
             BoardPlus.deleteAll();
             registeredPlugin = null;
+            stopService();
         }
     }
 
@@ -27,6 +31,7 @@ public class ScoreBoardAPI {
         if (registeredPlugin != null) {
             disabled = registeredPlugin;
             registeredPlugin = null;
+            stopService();
         }
     }
 
@@ -34,8 +39,18 @@ public class ScoreBoardAPI {
         if (disabled != null) {
             registeredPlugin = disabled;
             disabled = null;
+            startService();
         }
+    }
 
+    private static void startService () {
+        if (BoardPlus.timer == null || BoardPlus.timer.isShutdown())
+            BoardPlus.timer = Executors.newScheduledThreadPool(128);
+    }
+
+    private static void stopService () {
+        if (BoardPlus.timer != null && !BoardPlus.timer.isShutdown())
+            BoardPlus.timer.shutdownNow();
     }
 
 

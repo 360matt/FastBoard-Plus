@@ -1,13 +1,7 @@
 package fr.i360matt.fastboardplus;
 
 import fr.i360matt.fastboardplus.utils.FastBoard;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public abstract class BoardPlus {
-    protected static ScheduledExecutorService timer = Executors.newScheduledThreadPool(128);
+    protected static ScheduledExecutorService timer;
     private final Map<Integer, Set<Consumer<FastBoard>>> consumers = new HashMap<>();
     protected static final Map<String, BoardPlus> boards = new HashMap<>();
 
