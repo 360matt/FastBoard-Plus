@@ -20,7 +20,7 @@ but let's say there's an event or something like that: you can switch to another
   
 # Structure of project:
 * ``ScoreBoardAPI.java`` : concerns the API in general (initialization) 
-* ``BoardPlus.java`` : represents and relates to a scoreboard  
+* ``BoardView.java`` : represents and relates to a scoreboard's view 
 * ``BoardPlayer.java`` : concerns the scoreboard linked to the player 
   
 # How to use ?
@@ -33,25 +33,29 @@ public void onEnable() {
 }
 ```  
   
-### To unregister the service:  
->  I do not recommend attempting to re-enable the service if it has been unregistered this way!  
->  This method will be more useful when shutting down the plugin / server.  
+### To enable / disable the server:  
 ```java
 public void onDisable() {
-  ScoreBoardAPI.unregisterPlugin();
+  ScoreBoardAPI.enable();
+  ScoreBoardAPI.disable();
 }
 ```  
-  
-### Activate/Deactivate securely:
-```java
-ScoreBoardAPI.disable();
-ScoreBoardAPI.enable();
-```  
+
 ## Init one instance of BoardPlus:  
 ```java
-public class ExampleBoardTutorial extends BoardPlus {
+public class ExampleBoardTutorial extends BoardView {
+    
+    public ExampleBoardTutorial () {
+        super("name");
+        
+        /* 
+        super("name", true);
+        If you want to define thiw view as default                
+         */
+    }
+    
     @Override
-    public void init (final FastBoard board) {
+    public void init (final BoardPlayer board) {
         // this will be a lambda looped for every player
     }
 
@@ -66,8 +70,8 @@ public class ExampleBoardTutorial extends BoardPlus {
     }
     
     /* optionnaly, basic events */
-    @Override public void onMove (final FastBoard board) { }
-    @Override public void onOnlineChange (final FastBoard board) { }
+    @Override public void onMove (final BoardPlayer board) { }
+    @Override public void onOnlineChange (final BoardPlayer board) { }
     /* optionnaly, basic events */
 }
 ```  
@@ -75,47 +79,42 @@ And now, register it:
 ```java
 ExampleBoardTutorial inst = new ExampleBoardTutorial();
 // Instantiate the newly created class.
-
-// a simple scoreboard
-inst.register( " Name " );
-
-// the default scoreboard, with her name:
-inst.registerAsDefault( "Name" );
 ```   
-## Use BoardPlus:  
+## Use BoardView:  
 ### Get existing instance:
 ```java
-BoardPlus.getInstance( "SomeInstance" );
+BoardView.getInstance( "SomeInstance" );
 ```  
-### Statically get the BoardPlus Instance FastBoard:
+### Statically all BoardPlayer of a BoardView:
 ```java
-ScoreBoardAPI.updateAllBoards(" NameOfTheBoard ", (board) -> {
+BoardView.updateAllBoards(" NameOfTheBoard ", (board) -> {
     // some stuff with board:
     board.updateTitle("Welcome to Server");
 });
 ```  
 ### Add player to BoardPlus:  
 ```java
-BoardPlus jaaj = ...;
+BoardView jaaj = ...;
 jaaj.addPlayer ( Player );
 ```
 ### Add a task at any time:
 ```java
-BoardPlus jaaj = ...;
-jaaj.schedule( int TICK, FastBoard );
+BoardView jaaj = ...;
+jaaj.schedule( int TICK, BoardView );
 ```
 ### Temporarily hide this scoreboard by another:  
 I thought that for a server with jobs,  
 you can display the job scoreboard when a task is completed for X seconds and as long as the values change let it display,  
 then once the values don't change go back to the scoreboard main.  
   
-Here is an example:  
+Here is an example:
+
 ```java
 public class SomeTest implements Listener {
-    BoardPlus.SchedulingBascule basculeData = new BoardPlus.SchedulingBascule();
+    BoardView.SchedulingBascule basculeData = new BoardView.SchedulingBascule();
 
     @EventHandler
-    protected void onBlockBreak (BlockBreakEvent event) {
+    protected void onBlockBreak (final BlockBreakEvent event) {
         basculeData.setValue(" new value ");
         // As long as there is at least one call
         // on this method below 20 * 10 ticks,
@@ -123,34 +122,34 @@ public class SomeTest implements Listener {
     }
 
 
-    public void someMethod (Player player) {
-        BoardPlus defaultSco = BoardPlus.getInstance(" someInstance ");
-        BoardPlus jobsSco = BoardPlus.getInstance(" someInstance ");
+    public void someMethod (final Player player) {
+        final BoardView defaultSco = BoardView.getInstance(" someInstance ");
+        final BoardView jobsSco = BoardView.getInstance(" someInstance ");
 
 
         // add player to special scoreboard
-        jobsSco.addPlayer( player );
+        jobsSco.addPlayer(player);
 
         // switch to the main scoreboard
         // if the special scoreboard no longer evolves
 
         // In our example,
         // if the event has not been invoked for 20*10 ticks
-        jobsSco.basculeIfUnchanging(20*10, player, defaultSco, basculeData);
+        jobsSco.basculeIfUnchanging(20 * 10, player, defaultSco, basculeData);
     }
 }
 ```
-### Unregister instance of BoardPlus:  
+### Unregister instance of BoardView:  
 ```java
-BoardPlus jaaj = ...;
+BoardView jaaj = ...;
 jaaj.unregister();
 ```
 ## BoardPlayer:
 ### Get instance of BoardPlayer:
 ```java
-BoardPlayer bp = BoardPlayer.getPlayer(player);
+BoardView bp = BoardView.getPlayer(player);
 ```
 ### Remove player from all mechanism:
 ```java
-BoardPlayer.deletePlayer(player);
+BoardView.deletePlayer(player);
 ```
