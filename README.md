@@ -146,7 +146,7 @@ jaaj.unregister();
 ```
 ### Get instance of BoardPlayer:
 ```java
-BoardView bp = BoardView.getPlayer(player);
+BoardPlayer bp = BoardView.getPlayer(player);
 ```
 ### Remove player from all mechanism:
 ```java
