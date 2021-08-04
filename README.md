@@ -41,7 +41,7 @@ public void onDisable() {
 }
 ```  
 
-## Init one instance of BoardPlus:  
+## Init one instance of BoardView:  
 ```java
 public class ExampleBoardTutorial extends BoardView {
     
@@ -144,7 +144,6 @@ public class SomeTest implements Listener {
 BoardView jaaj = ...;
 jaaj.unregister();
 ```
-## BoardPlayer:
 ### Get instance of BoardPlayer:
 ```java
 BoardView bp = BoardView.getPlayer(player);
