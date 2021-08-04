@@ -1,4 +1,4 @@
-# :sparkles: FastBoard-Plus (1.7 - 1.16)
+# :sparkles: FastBoard-Plus (1.7 - 1.17)
 
 Forked from: FastBoard from MrMicky (https://github.com/MrMicky-FR/FastBoard)   
 Please read the original project documentation before this one.  
