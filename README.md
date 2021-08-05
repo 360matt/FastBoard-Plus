@@ -3,6 +3,15 @@
 Forked from: FastBoard from MrMicky (https://github.com/MrMicky-FR/FastBoard)   
 Please read the original project documentation before this one.  
 
+## Maven
+```
+<dependency>
+    <groupId>io.github.360matt</groupId>
+    <artifactId>FastBoard-Plus</artifactId>
+    <version>2.0-SNAPSHOT</version>
+</dependency>
+```
+
 ## :question: Why a fork ?
 * I thought my additions might be useful for a few people, I personally use it on my server.  
 * it would be too cumbersome to add it to the original project  
